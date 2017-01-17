@@ -6,6 +6,7 @@
 #include "jda/common.hpp"
 #include "jda/cascador.hpp"
 #include <map>
+#include <iostream>
 
 using namespace cv;
 using namespace std;
@@ -127,10 +128,12 @@ void JoinCascador::SerializeFrom(FILE* fd) {
   int tmp;
   fread(&YO, sizeof(YO), 1, fd);
   fread(&tmp, sizeof(int), 1, fd);
+//  cout << "tmp T is "<< tmp <<",T is "<< T << endl;
   JDA_Assert(tmp == T, "T is wrong!");
   fread(&tmp, sizeof(int), 1, fd);
   JDA_Assert(tmp == K, "K is wrong!");
   fread(&tmp, sizeof(int), 1, fd);
+//  cout << "tmp landmark_n is " << tmp << ",landmark_n is " << landmark_n <<endl;
   JDA_Assert(tmp == landmark_n, "landmark_n is wrong!");
   fread(&tmp, sizeof(int), 1, fd);
   JDA_Assert(tmp == tree_depth, "tree_depth is wrong!");

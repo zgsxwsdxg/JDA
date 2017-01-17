@@ -2,7 +2,7 @@
     "T": 5,
     "K": 540,
     "landmark_n_": 27,
-    "landmark_n": 5,
+    "landmark_n": 27,
     "tree_depth": 4,
     "random_shift": 0.02,
     "image_size": {

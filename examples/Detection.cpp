@@ -11,65 +11,64 @@ using namespace jda;
 
 int main(int argc, char *argv[]) {
 
-  if (argc != 4) {
-    cout << "Usage: " << argv[0] << " deploy_file model_file image_file" << endl;
+  if (argc != 3) {
+    cout << "Usage: " << argv[0] << " model_file image_file" << endl;
     return 0;
   }
 
-  cout << "Hello world" << endl;
-  cv::Mat color_image = imread(argv[3], IMREAD_COLOR);
+  string model_file, image_file;
+  model_file = argv[1];
+  image_file = argv[2];
+  cv::Mat color_image = imread(image_file, IMREAD_COLOR);
 
   if (color_image.empty()) {
     cout << "Load image failed" << endl;
     return 0;
   }
 
-  cout << "Load image success\n";
-  JoinCascador joincascador();
-//  cout << "Start fopen model"<<endl;
-//  FILE *fd = fopen(argv[2], "rb");
+  JoinCascador joincascador;
+  FILE *fd = fopen(model_file.c_str(), "rb");
 
-//  if (NULL == fd) {
-//    cout << "Open model failed." << endl;
-//    return 0;
-//  }
+  if (NULL == fd) {
+    cout << "Open model failed." << endl;
+    return 0;
+  }
 
-//  cout << "Open model success\n";
-//  joincascador.SerializeFrom(fd);
-//  fclose(fd);
-//  cout << "test 1" << endl;
+  joincascador.SerializeFrom(fd);
+  fclose(fd);
 
-//  cv::Mat gray_image;
-//  cvtColor(color_image, gray_image, CV_BGR2GRAY);
-//  vector<double> scores;
-//  vector<Rect> rects;
-//  vector<Mat_<double> > shapes;
-//  DetectionStatisic statisic;
-//  joincascador.Detect(gray_image, rects, scores, shapes, statisic);
+  cv::Mat gray_image;
+  cvtColor(color_image, gray_image, CV_BGR2GRAY);
+  vector<double> scores;
+  vector<Rect> rects;
+  vector<Mat_<double> > shapes;
+  DetectionStatisic statisic;
+  joincascador.Detect(gray_image, rects, scores, shapes, statisic);
 
-//  const int face_total = rects.size();
+  const int face_total = rects.size();
 
-//  if (face_total <= 0) {
-//    cout << "Detection face is empty" << endl;
-//    return 0;
-//  }
+  if (face_total <= 0) {
+    cout << "Detection face is empty" << endl;
+    return 0;
+  }
 
-//  cout << "Detection: total " << face_total << " faces" << endl;
+  cout << "Detection: total " << face_total << " faces" << endl;
 
 
-//  for (int face_idx = 0; face_idx < face_total; ++face_idx) {
-//    cv::rectangle(color_image, rects[face_idx], cv::Scalar(0, 255, 0), 1);
-//    const Mat_<double> shape = shapes[face_idx];
-//    const int landmark_n = shape.cols / 2;
+  for (int face_idx = 0; face_idx < face_total; ++face_idx) {
+    cv::rectangle(color_image, rects[face_idx], cv::Scalar(0, 255, 0), 1);
+    const Mat_<double> shape = shapes[face_idx];
+    const int landmark_n = shape.cols / 2;
+    cout << "Face:" << face_idx << ",score:"<<scores[face_idx]<<",landmark_n:" << landmark_n << endl;
 
-//    for (int i = 0; i < landmark_n; ++i) {
-//      circle(color_image, Point(shape(0, 2 * i), shape(0, 2 * i + 1)), 1,
-//             cv::Scalar(0, 0, 255), -1);
-//    }
-//  }
+    for (int i = 0; i < landmark_n; ++i) {
+      circle(color_image, Point(shape(0, 2 * i), shape(0, 2 * i + 1)), 1,
+             cv::Scalar(0, 0, 255), -1);
+    }
+  }
 
-//  string save_path = argv[3];
-//  save_path += "_jda.jpg";
-//  imwrite(save_path, color_image);
+  string save_path = image_file;
+  save_path += "_jda.jpg";
+  imwrite(save_path, color_image);
   return 0;
 }

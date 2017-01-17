@@ -7,6 +7,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <jsmn.hpp>
 #include "jda/common.hpp"
+#include <iostream>
 
 using namespace cv;
 using namespace std;
@@ -114,8 +115,7 @@ void showImage(const Mat& img) {
 }
 
 Config::Config() {
-  jsmn::Object json_config = jsmn::parse("../config.json");
-
+  jsmn::Object json_config = jsmn::parse("/home/dxg/work_place/JDA/model/config.json");
   // model meta data
   T = json_config["T"].unwrap<Number>();
   K = json_config["K"].unwrap<Number>();
