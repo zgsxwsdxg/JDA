@@ -33,7 +33,7 @@
         "test": "../data/test.txt"
     },
     "fddb": {
-        "dir": "../data/fddb",
+        "dir": "/home/dxg/work_place/JDA/data/fddb",
         "out": true,
         "nms": true,
         "draw_score": true,

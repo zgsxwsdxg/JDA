@@ -4,6 +4,7 @@
 #include "opencv2/highgui.hpp"
 #include "jda/cascador.hpp"
 #include "jda/common.hpp"
+#include <time.h>
 
 using namespace std;
 using namespace cv;
@@ -43,8 +44,13 @@ int main(int argc, char *argv[]) {
   vector<Rect> rects;
   vector<Mat_<double> > shapes;
   DetectionStatisic statisic;
+  clock_t start_time = clock();
+  double t=(double)cvGetTickCount();
   joincascador.Detect(gray_image, rects, scores, shapes, statisic);
-
+  t=((double)cvGetTickCount() - t)/(cvGetTickFrequency()*1000);
+  cout << "OpenCV time is " << t <<"ms"<< endl;
+  clock_t end_time = clock();
+  cout << "Run time is " << static_cast<double>(end_time - start_time) /CLOCKS_PER_SEC*1000<<"ms"<< endl;
   const int face_total = rects.size();
 
   if (face_total <= 0) {
@@ -59,7 +65,8 @@ int main(int argc, char *argv[]) {
     cv::rectangle(color_image, rects[face_idx], cv::Scalar(0, 255, 0), 1);
     const Mat_<double> shape = shapes[face_idx];
     const int landmark_n = shape.cols / 2;
-    cout << "Face:" << face_idx << ",score:"<<scores[face_idx]<<",landmark_n:" << landmark_n << endl;
+    cout << "Face:" << face_idx << ",score:" << scores[face_idx] << ",landmark_n:"
+         << landmark_n << endl;
 
     for (int i = 0; i < landmark_n; ++i) {
       circle(color_image, Point(shape(0, 2 * i), shape(0, 2 * i + 1)), 1,

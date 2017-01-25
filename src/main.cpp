@@ -7,7 +7,7 @@ void train();
 void test();
 void resume();
 void live();
-void fddb();
+void fddb(const char* model_file);
 void dump();
 
 /*! \brief command help */
@@ -23,7 +23,7 @@ static const char help[] = "Joint Cascade Face Detection and Alignment\n\n"
  * \brief Command Dispatch
  */
 int main(int argc, char* argv[]) {
-  if (argc != 2) {
+  if (argc != 3) {
     printf(help);
   }
   else if (strcmp(argv[1], "train") == 0) {
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
     live();
   }
   else if (strcmp(argv[1], "fddb") == 0) {
-    fddb();
+    fddb(argv[2]);
   }
   else if (strcmp(argv[1], "dump") == 0) {
     dump();
